@@ -96,7 +96,12 @@ async function getHTML(productURL) {
     }
 
     let availability = $('#availability').text().replace(/\n/g,'');
-    var product = [title,price,availability];
+    // var product = [title,price,availability];
+    var product = {
+        title: title,
+        price: price,
+        availability: availability
+    };
     return resolve(product);
     });
 }
