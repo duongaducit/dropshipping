@@ -36,7 +36,7 @@ app.get('/node/getaddress', (req, res) => {
 });
 
 //server listens to port 8082
-const server = app.listen(8082, (err) => {
+const server = app.listen(80, (err) => {
     if (err)
         throw err;
     console.log('listening on port 8082');
@@ -97,7 +97,7 @@ async function getHTML(productURL) {
     }
 
     let availability = $('#availability').text().replace(/\n/g,'');
-    var product = [title,price,availability]
+    var product = [title,price,availability];
     return resolve(product);
     });
 }
