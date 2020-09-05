@@ -86,6 +86,12 @@ async function getHTML(productURL) {
         }
     })
         .catch(function (error) {
+            var product = {
+                err: error,
+                title: '',
+                price: '',
+                availability: ''
+            };
             return reject(error);
         });
     const $ = cherrio.load(html);
@@ -98,6 +104,7 @@ async function getHTML(productURL) {
     let availability = $('#availability').text().replace(/\n/g,'');
     // var product = [title,price,availability];
     var product = {
+        err: '',
         title: title,
         price: price,
         availability: availability
