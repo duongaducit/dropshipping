@@ -1,6 +1,3 @@
-
-const mongoose = require('mongoose');
-const config = require('./DB');
 const cors = require('cors');
 let express = require('express');
 //setup express app 
@@ -9,12 +6,6 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 const productRouter = require('./router.product');
-
-mongoose.Promise = global.Promise;
-mongoose.connect(config.DB, { useNewUrlParser: true }).then(
-  () => { console.log('Database is connected');},
-  err => { console.log('Cannot connect to the database' + err) }
-);
 
 var whitelist = ['http://localhost:4200', 'http://34.84.149.232', 'https://test.jpc-auction.vnext.work'];
 var corsOptions = {
