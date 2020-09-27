@@ -1,0 +1,46 @@
+const axios = require('axios');
+const cherrio = require('cheerio');
+
+var agentconst = ['Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
+'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:53.0) Gecko/20100101 Firefox/53.0',
+'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36 Edge/14.14393',
+'Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko',
+'Mozilla/5.0 (iPad; CPU OS 8_4_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12H321 Safari/600.1.4'];
+async function getHTML(productURL) {
+    var idx = Math.floor(Math.random() * 4);
+    var agent = agentconst[idx];
+    return new Promise(async (resolve, reject) => {
+    const { data: html } = await axios.get(productURL, {
+        headers: {
+            'User-Agent': agent
+        }
+    })
+        .catch(function (error) {
+            var product = {
+                err: error,
+                title: '',
+                price: '',
+                availability: ''
+            };
+            return reject(error);
+        });
+    const $ = cherrio.load(html);
+    let title = $('#productTitle').text().replace(/\n/g,'');
+    let price = $('#priceblock_ourprice').text().replace(/\n/g,'');
+    if (!price) {
+        price = $("#priceblock_saleprice").text().replace(/\n/g,'');
+    }
+
+    let availability = $('#availability').text().replace(/\n/g,'');
+    // var product = [title,price,availability];
+    var product = {
+        err: '',
+        title: title,
+        price: price,
+        availability: availability
+    };
+    return resolve(product);
+    });
+}
+
+module.exports = getHTML;
